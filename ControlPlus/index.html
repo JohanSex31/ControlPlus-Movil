@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FF6B00" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <title>ControlPlus — Control de Inventario</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>" />
   <link rel="stylesheet" href="css/styles.css?v=4" />
@@ -696,15 +699,42 @@
     <div class="modal-body">
       <form id="com-form">
         <div class="form-group">
+          <label>Tu nombre (opcional)</label>
+          <input id="com-nombre" class="form-control" type="text" maxlength="100" placeholder="Ej: Ana Pérez" autocomplete="name" />
+        </div>
+        <div class="form-group">
           <label>Cuéntanos qué piensas de esta pantalla</label>
           <textarea id="com-texto" class="form-control" rows="5" maxlength="1000" required placeholder="Escribe tu comentario..."></textarea>
           <small id="com-contador" style="color:#888">0 / 1000</small>
         </div>
         <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="abrirListaComentarios()">Ver comentarios</button>
           <button type="button" class="btn btn-ghost" onclick="closeModal('modal-comentarios')">Cancelar</button>
           <button id="com-guardar" type="submit" class="btn btn-primary">Guardar comentario</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Lista de comentarios -->
+<div id="modal-lista-comentarios" class="modal-overlay">
+  <div class="modal" style="max-width:760px;width:100%">
+    <div class="modal-header">
+      <h3>💬 Comentarios recibidos</h3>
+      <button class="modal-close" onclick="closeModal('modal-lista-comentarios')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="table-wrap" style="max-height:60vh;overflow:auto">
+        <table>
+          <thead><tr><th>Nombre</th><th>Pantalla</th><th>Comentario</th></tr></thead>
+          <tbody id="com-lista-tbody"></tbody>
+        </table>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-lista-comentarios')">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="closeModal('modal-lista-comentarios');abrirComentarios()">Escribir comentario</button>
+      </div>
     </div>
   </div>
 </div>
@@ -720,5 +750,11 @@
 <script src="js/modules.js"></script>
 <script src="js/comentarios.js"></script>
 
+<script>
+  // Registro del service worker (permite instalar la app como PWA / APK)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
+</script>
 </body>
 </html>
